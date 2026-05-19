@@ -14,9 +14,9 @@ from fetch_content import fetch_all_sources
 load_dotenv()
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+print("GROQ KEY CHECK:", "✅ Found" if os.getenv("GROQ_API_KEY") else "❌ NOT FOUND")
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "llama-3.3-70b-versatile"  # best free model on Groq
-
 
 def build_context(sources: list[dict]) -> str:
     """
@@ -129,6 +129,8 @@ Remember: return ONLY the JSON object, nothing else."""
 
     print("🧠 Sending to Groq...")
     response = requests.post(GROQ_URL, headers=headers, json=payload, timeout=30)
+    print("Groq status code:", response.status_code)
+    print("Groq response:", response.text[:300])
     response.raise_for_status()
 
     data = response.json()
